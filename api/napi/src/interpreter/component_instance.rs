@@ -1,3 +1,6 @@
+// Copyright © SixtyFPS GmbH <info@slint-ui.com>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
+
 use slint_interpreter::{ComponentHandle, ComponentInstance};
 
 #[napi(js_name = "JsComponentInstance")]

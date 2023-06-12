@@ -1,6 +1,9 @@
+// Copyright © SixtyFPS GmbH <info@slint-ui.com>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
+
 use slint_interpreter::ComponentDefinition;
 
-use super::JsComponentInstance;
+use super::{JsComponentInstance, JsProperty};
 
 #[napi(js_name = "ComponentDefinition")]
 pub struct JsComponentDefinition {
@@ -21,8 +24,29 @@ impl JsComponentDefinition {
     }
 
     #[napi(getter)]
-    pub fn name(&self) -> String {
-        self.internal.name().into()
+    pub fn properties(&self) -> Vec<JsProperty> {
+        self.internal
+            .properties()
+            .map(|(name, value_type)| JsProperty { name, value_type: value_type.into() })
+            .collect()
+    }
+
+    #[napi(getter)]
+    pub fn callbacks(&self) -> Vec<String> {
+        self.internal.callbacks().collect()
+    }
+
+    #[napi(getter)]
+    pub fn global_properties(&self, global_name: String) -> Option<Vec<JsProperty>> {
+        self.internal.global_properties(global_name.as_str()).map(|iter| {
+            iter.map(|(name, value_type)| JsProperty { name, value_type: value_type.into() })
+                .collect()
+        })
+    }
+
+    #[napi(getter)]
+    pub fn global_callbacks(&self, global_name: String) -> Option<Vec<String>> {
+        self.internal.global_callbacks(global_name.as_str()).map(|iter| iter.collect())
     }
 
     #[napi]
@@ -32,5 +56,10 @@ impl JsComponentDefinition {
         }
 
         None
+    }
+
+    #[napi(getter)]
+    pub fn name(&self) -> String {
+        self.internal.name().into()
     }
 }
