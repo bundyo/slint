@@ -1,6 +1,8 @@
 // Copyright © SixtyFPS GmbH <info@slint-ui.com>
 // SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
 
+import { ColorSchemeSelector } from "color-scheme.slint";
+
 export struct TextStyle {
     font-size: length,
     font-weight: int,
@@ -15,4 +17,31 @@ export global Typography {
         font-size: 14px,
         font-weight: regular-font-weight
     };
+}
+
+export global Palette {
+    in-out property<bool> dark-color-scheme: ColorSchemeSelector.dark-color-scheme;
+
+    out property <brush> brand-background: dark-color-scheme ? #115EA3 : #0F6CBD;
+    out property <brush> brand-background-hover: dark-color-scheme ? #0F6CBD : #115EA3;
+    out property <brush> brand-background-pressed: dark-color-scheme ? #0C3B5E : #0C3B5E;
+    out property <brush> brand-background-selected: dark-color-scheme ? #0F548C : #0F548C;
+    out property <brush> background-1: dark-color-scheme ? #292929 : #FFFFFF;
+    out property <brush> background-1-hover: dark-color-scheme ? #3D3D3D : #F5F5F5;
+    out property <brush> background-1-pressed: dark-color-scheme ? #1F1F1F : #E0E0E0;
+    out property <brush> background-1-selected: dark-color-scheme ? #383838 : #EBEBEB;
+    out property <brush> background-disabled: dark-color-scheme ? #141414 : #F0F0F0;
+    out property <brush> foreground-1: dark-color-scheme ? #FFFFFF : #242424;
+    out property <brush> foreground-on-brand: #FFFFFF;
+    out property <brush> foreground-1-hover: dark-color-scheme ? #FFFFFF : #242424;
+    out property <brush> foreground-1-pressed: dark-color-scheme ? #FFFFFF : #242424;
+    out property <brush> foreground-1-selected: dark-color-scheme ? #FFFFFF : #242424;
+    out property <brush> foreground-disabled: dark-color-scheme ? #5C5C5C : #BDBDBD;
+    out property <brush> stroke-1: dark-color-scheme ? #666666 : #D1D1D1;
+    out property <brush> stroke-1-hover: dark-color-scheme ? #757575 : #C7C7C7;
+    out property <brush> stroke-1-pressed: dark-color-scheme ? #6B6B6B : #B3B3B3;
+    out property <brush> stroke-1-selected: dark-color-scheme ? #707070 : #BDBDBD;
+    out property <brush> stroke-disabled: dark-color-scheme ? #424242 : #E0E0E0;
+    out property <brush> stroke-1-focused: dark-color-scheme ? #FFFFFF : #000000;
+    out property <brush> stroke-2-focused: dark-color-scheme ? #000000 : #FFFFFF;
 }

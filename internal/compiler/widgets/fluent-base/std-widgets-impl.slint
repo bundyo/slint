@@ -3,6 +3,9 @@
 
 import { ColorSchemeSelector } from "color-scheme.slint";
 
+import { Button } from "widget-button.slint";
+export { Button }
+
 export global Palette  {
     in-out property<bool> dark-color-scheme: ColorSchemeSelector.dark-color-scheme;
 
@@ -79,84 +82,6 @@ export global StyleMetrics  {
     out property<color> textedit-background-disabled: Palette.neutralLighter;
     out property<color> textedit-text-color-disabled: Palette.neutralTertiary;
     out property<bool> dark-color-scheme: Palette.dark-color-scheme;
-}
-
-export component Button {
-    callback clicked;
-    in property<string> text <=> text.text;
-    out property<bool> has-focus: fs.has-focus;
-    out property<bool> pressed: self.enabled && touch.pressed;
-    in property<bool> enabled <=> touch.enabled;
-    in property<bool> checkable;
-    in-out property<bool> checked;
-    in property<image> icon;
-    in property <bool> primary;
-
-    accessible-role: button;
-    accessible-label <=> text.text;
-
-    Rectangle {
-        border-width: root.primary ? 0 : 1px;
-        border-radius: 2px;
-        border-color: !root.enabled ? Palette.neutralLighter : Palette.neutralSecondaryAlt;
-        background: !root.enabled ? Palette.neutralLighter
-            : (touch.pressed || root.checked) ? Palette.neutralLight
-            : touch.has-hover ? Palette.neutralLighter
-            : root.primary ? Palette.accent : Palette.white;
-    }
-    horizontal-stretch: 0;
-    vertical-stretch: 0;
-    min-height: max(32px, l.min-height);
-    l := HorizontalLayout {
-        padding-left: 16px;
-        padding-right: 16px;
-        spacing: 8px;
-        padding-top: 3px;
-        padding-bottom: 3px;
-
-        if (root.icon.width > 0 && root.icon.height > 0): Image {
-            source <=> root.icon;
-            width: 24px;
-        }
-
-        text := Text {
-            color: !root.enabled ? Palette.neutralTertiary : Palette.neutralDark;
-            horizontal-alignment: center;
-            vertical-alignment: center;
-            font-weight: 600;
-        }
-    }
-
-    touch := TouchArea {
-        clicked => {
-            if (root.checkable) {
-                root.checked = !root.checked;
-            }
-            root.clicked();
-        }
-    }
-
-    fs := FocusScope {
-        x:0;
-        width: 0px; // Do not react on clicks
-        enabled <=> root.enabled;
-        key-pressed(event) => {
-            if (event.text == " " || event.text == "\n") {
-                 touch.clicked();
-                 return accept;
-            }
-            return reject;
-        }
-    }
-
-    Rectangle { // Focus rectangle
-        x: 3px;
-        y: self.x;
-        width: parent.width - 2*self.x;
-        height: parent.height - 2*self.y;
-        border-width: root.enabled && root.has-focus? 1px : 0px;
-        border-color: Palette.black;
-    }
 }
 
 component ScrollBar inherits Rectangle {

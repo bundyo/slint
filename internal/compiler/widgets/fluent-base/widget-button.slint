@@ -1,4 +1,119 @@
 // Copyright © SixtyFPS GmbH <info@slint-ui.com>
 // SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
 
-import { Typography } from "styling.slint";
+import { Typography, Palette } from "styling.slint";
+
+export component Button {
+    callback clicked;
+
+    in property<string> text <=> i-text.text;
+    out property<bool> has-focus: i-focus-scope.has-focus;
+    out property<bool> pressed: self.enabled && i-touch-area.pressed;
+    in property<bool> enabled <=> i-touch-area.enabled;
+    in property<bool> checkable;
+    in-out property<bool> checked;
+    in property<image> icon;
+    in property <bool> primary;
+
+    min-width: max(32px, i-layout.min-width);
+    min-height: max(32px, i-layout.min-height);
+    horizontal-stretch: 0;
+    vertical-stretch: 0;
+
+    accessible-label <=> i-text.text;
+    accessible-role: button;
+
+    i-background := Rectangle {
+        border-radius: 4px;
+        border-width: root.primary ? 0 : 1px;
+        background: root.primary ? Palette.brand-background : Palette.background-1;
+        border-color: Palette.stroke-1;
+
+        i-layout := HorizontalLayout {
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            spacing: 4px;
+            alignment: center;
+
+            if (root.icon.width > 0 && root.icon.height > 0) : Image {
+                y: (parent.height - self.height) / 2;
+                source <=> root.icon;
+                width: 20px;
+            }
+
+            i-text := Text {
+                color: root.primary ? Palette.foreground-on-brand : Palette.foreground-1;
+                font-size: Typography.body-1.font-size;
+                font-weight: Typography.body-1.font-weight;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+
+                animate color { duration: 200ms; }
+            }
+        }
+
+        animate background, border-color { duration: 200ms; }
+    }
+
+    i-touch-area := TouchArea {
+        clicked => {
+            if (root.checkable) {
+                root.checked = !root.checked;
+            }
+            root.clicked();
+        }
+    }
+
+    i-focus-scope := FocusScope {
+        x:0;
+        width: 0px; // Do not react on clicks
+        enabled <=> root.enabled;
+
+        key-pressed(event) => {
+            if (event.text == " " || event.text == "\n") {
+                i-touch-area.clicked();
+                 return accept;
+            }
+            return reject;
+        }
+    }
+
+    // focus border
+    if (root.has-focus) : Rectangle {
+        border-width: 2px;
+        border-radius: i-background.border-radius;
+        border-color: Palette.stroke-1-focused;
+
+        Rectangle {
+            x: parent.border-radius;
+            y: parent.border-radius;
+            width: parent.width - 2 * parent.border-radius;
+            height: parent.height - 2 * parent.border-radius;
+            border-width: 1px;
+            border-radius: parent.border-width;
+            border-color: Palette.stroke-2-focused;
+        }
+    }
+
+    states [
+        disabled when !root.enabled : {
+            i-background.background: Palette.background-disabled;
+            i-background.border-color: Palette.stroke-disabled;
+            i-text.color: Palette.foreground-disabled;
+        }
+        checked when root.checked : {
+            i-background.background: root.primary ? Palette.brand-background-selected : Palette.background-1-selected;
+            i-background.border-color: Palette.stroke-1-selected;
+        }
+        pressed when root.pressed : {
+            i-background.background: root.primary ? Palette.brand-background-pressed : Palette.background-1-pressed;
+            i-background.border-color: Palette.stroke-1-pressed;
+        }
+        hover when i-touch-area.has-hover : {
+            i-background.background: root.primary ? Palette.brand-background-hover : Palette.background-1-hover;
+            i-background.border-color: Palette.stroke-1-hover;
+        }
+    ]
+}
