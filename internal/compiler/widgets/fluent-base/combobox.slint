@@ -1,0 +1,149 @@
+// Copyright © SixtyFPS GmbH <info@slint-ui.com>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
+
+import { Typography, Palette, Paths } from "styling.slint";
+import { MenuBorder, MenuItem} from "components.slint";
+
+export component ComboBox {
+    callback selected(string /* current-value */);
+
+    in property <[string]> model;
+    in property <bool> enabled <=> i-touch-area.enabled;
+    in-out property <int> current-index: 0;
+    in-out property <string> current-value: root.model[root.current-index];
+
+    out property <bool> has-focus <=> i-focus-scope.has-focus;
+
+    min-width: max(180px, i-layout.min-height);
+    min-height: max(32px, i-layout.min-height);
+    horizontal-stretch: 1;
+    vertical-stretch: 0;
+    forward-focus: i-focus-scope;
+
+    i-background := Rectangle {
+        border-radius: 4px;
+        border-width: 1px;
+        border-color: Palette.stroke-1;
+        background: Palette.background-1;
+
+        i-layout := HorizontalLayout {
+            padding-left: 10px;
+            padding-right: 10px;
+            spacing: 10px;
+
+            i-text := Text {
+                horizontal-alignment: left;
+                vertical-alignment: center;
+                font-size: Typography.body-1.font-size;
+                font-weight: Typography.body-1.font-weight;
+                color: Palette.foreground-1;
+                text: root.current-value;
+            }
+
+            Path {
+                width: 12px;
+                height: 7px;
+                y: (parent.height - self.height) / 2;
+                fill: Palette.foreground-3;
+                commands: Paths.dropdown;
+            }
+        }
+
+        i-underline := Rectangle {
+            x: (parent.width - self.width) / 2;
+            y: (parent.height - self.height);
+            width: parent.width - 2 * parent.border-radius;
+            height: parent.border-width;
+            background: Palette.stroke-accessible;
+        }
+
+        i-indicator := Rectangle {
+            x: (parent.width - self.width) / 2;
+            y: (parent.height - self.height);
+            width: 0;
+            height: 0;
+            background: Palette.combound-brand-storke-1;
+
+            animate width, height { duration: 200ms; easing: cubic-bezier(0.05, 0.7, 0.1, 1.0);  }
+        }
+
+        animate border-color { duration: 200ms; }
+    }
+
+    i-touch-area := TouchArea {
+        clicked => {
+            root.focus();
+            i-popup.show();
+        }
+    }
+
+    i-focus-scope := FocusScope {
+        x: 0;
+        width: 0; // Do not react on clicks
+        enabled <=> root.enabled;
+
+        key-pressed(event) => {
+            if (event.text == Key.UpArrow) {
+                root.move-selection-up();
+                return accept;
+            } else if (event.text == Key.DownArrow) {
+                root.move-selection-down();
+                return accept;
+            } else if (event.text == Key.Return) {
+                i-popup.show();
+            }
+            return reject;
+        }
+    }
+
+    i-popup := PopupWindow {
+        x: 0;
+        y: root.height + 1px;
+        width: root.width;
+
+        MenuBorder {
+            VerticalLayout {
+                padding: 4px;
+
+                for value[index] in root.model : MenuItem {
+                    text: value;
+                    selected: index == root.current-index;
+
+                    clicked => {
+                        root.select(index);
+                    }
+                }
+            }
+        }
+    }
+
+    function select(index: int) {
+        root.current-index = index;
+        root.current-value = root.model[root.current-index];
+        root.selected(root.current-value);
+    }
+
+    function move-selection-up() {
+        root.select(Math.max(root.current-index - 1, 0));
+    }
+
+    function move-selection-down() {
+        root.select(Math.min(root.current-index + 1, root.model.length - 1));
+    }
+
+    states [
+        pressed when i-touch-area.pressed : {
+            i-background.border-color: Palette.stroke-1-pressed;
+            i-indicator.width: i-underline.width;
+            i-indicator.height: 2px;
+        }
+        focused when root.has-focus : {
+            i-background.border-color: Palette.stroke-1-pressed;
+            i-indicator.width: i-underline.width;
+            i-indicator.height: 2px;
+        }
+        hover when i-touch-area.has-hover : {
+            i-background.border-color: Palette.stroke-1-hover;
+        }
+    ]
+}

@@ -29,6 +29,7 @@ export global Palette {
     out property <brush> combound-brand-background: dark-color-scheme ? #479EF5 : #0F6CBD;
     out property <brush> combound-brand-background-hover: dark-color-scheme ? #62ABF5 : #115EA3;
     out property <brush> combound-brand-background-pressed: dark-color-scheme ? #2886DE : #115EA3;
+    out property <brush> combound-brand-storke-1: dark-color-scheme ? #479EF5 : #0F6CBD;
     out property <brush> background-1: dark-color-scheme ? #292929 : #FFFFFF;
     out property <brush> background-1-hover: dark-color-scheme ? #3D3D3D : #F5F5F5;
     out property <brush> background-1-pressed: dark-color-scheme ? #1F1F1F : #E0E0E0;
@@ -40,6 +41,8 @@ export global Palette {
     out property <brush> foreground-1-pressed: dark-color-scheme ? #FFFFFF : #242424;
     out property <brush> foreground-1-selected: dark-color-scheme ? #FFFFFF : #242424;
     out property <brush> foreground-2: dark-color-scheme ? #D6D6D6 : #424242;
+    out property <brush> foreground-2-hover: dark-color-scheme ? #FFFFFF : #242424;
+    out property <brush> foreground-2-pressed: dark-color-scheme ? #FFFFFF : #242424;
     out property <brush> foreground-3: dark-color-scheme ? #ADADAD : #616161;
     out property <brush> foreground-inverted: dark-color-scheme ? #242424 : #FFFFFF;
     out property <brush> foreground-inverted-hover: dark-color-scheme ? #242424 : #FFFFFF;
@@ -56,4 +59,10 @@ export global Palette {
     out property <brush> stroke-accessible-hover: dark-color-scheme ? #BDBDBD : #575757;
     out property <brush> stroke-accessible-pressed: dark-color-scheme ? #B3B3B3 : #4D4D4D;
     out property <brush> stroke-accessible-disabled: dark-color-scheme ? #424242 : #E0E0E0;
+    out property <brush> shadow: dark-color-scheme ? #00000074 : #00000024;
+}
+
+export global Paths {
+    out property <string> check-mark: "M7.76497 0.204742C8.06611 0.489151 8.07967 0.963831 7.79526 1.26497L3.54526 5.76497C3.40613 5.91228 3.21332 5.99703 3.01071 5.99993C2.8081 6.00282 2.61295 5.92361 2.46967 5.78033L0.21967 3.53033C-0.0732233 3.23744 -0.0732233 2.76257 0.21967 2.46967C0.512563 2.17678 0.987437 2.17678 1.28033 2.46967L2.98463 4.17397L6.70474 0.235034C6.98915 -0.0661045 7.46383 -0.0796667 7.76497 0.204742Z";
+    out property <string> dropdown: "M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z";
 }

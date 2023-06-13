@@ -1,0 +1,89 @@
+// Copyright © SixtyFPS GmbH <info@slint-ui.com>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
+
+import { Palette, Typography, Paths } from "styling.slint";
+
+export component FocusBorder inherits Rectangle {
+    border-width: 2px;
+    border-color: Palette.stroke-1-focused;
+
+    Rectangle {
+        x: parent.border-width;
+        y: parent.border-width;
+        width: parent.width - 2 * parent.border-width;
+        height: parent.height - 2 * parent.border-width;
+        border-width: 1px;
+        border-radius: parent.border-width;
+        border-color: Palette.stroke-2-focused;
+    }
+}
+
+export component MenuBorder inherits Rectangle {
+    border-radius: 4px;
+    background: Palette.background-1;
+    drop-shadow-blur: 5px;
+    drop-shadow-color: Palette.shadow;
+}
+
+export component MenuItem {
+    callback clicked <=> i-touch-area.clicked;
+
+    in property <bool> selected;
+    in property <string> text <=> i-text.text;
+
+    min-width: i-layout.min-width;
+    min-height: max(32px, i-layout.min-height);
+    vertical-stretch: 0;
+    horizontal-stretch: 1;
+
+    i-background := Rectangle {
+        background: Palette.background-1;
+        border-radius: 4px;
+
+        i-layout := HorizontalLayout {
+            padding-left: 6px;
+            padding-right: 6px;
+            spacing: 4px;
+
+            i-icon := Path {
+                y: (parent.height - self.height) / 2;
+                visible: root.selected;
+                commands: Paths.check-mark;
+                fill: Palette.foreground-2;
+                width: 12px;
+                height: 9px;
+
+                animate fill { duration: 200ms; }
+            }
+
+            i-text := Text {
+                color: Palette.foreground-2;
+                font-size: Typography.body-1.font-size;
+                font-weight: Typography.body-1.font-weight;
+                vertical-alignment: center;
+                horizontal-alignment: left;
+                overflow: elide;
+
+                animate color { duration: 200ms; }
+            }
+        }
+
+        animate background { duration: 200ms; }
+    }
+
+    i-touch-area := TouchArea {}
+
+    states [
+        pressed when i-touch-area.pressed : {
+            i-icon.fill: Palette.foreground-2-pressed;
+            i-text.color: Palette.foreground-2-pressed;
+            i-background.background: Palette.background-1-pressed;
+        }
+        hover when i-touch-area.has-hover : {
+            i-icon.fill: Palette.foreground-2-hover;
+            i-text.color: Palette.foreground-2-hover;
+            i-background.background: Palette.background-1-hover;
+        }
+    ]
+}
+
