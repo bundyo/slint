@@ -3,6 +3,8 @@
 
 use slint_interpreter::{ComponentHandle, ComponentInstance};
 
+use super::JsComponentDefinition;
+
 #[napi(js_name = "JsComponentInstance")]
 pub struct JsComponentInstance {
     internal: ComponentInstance,
@@ -19,6 +21,11 @@ impl JsComponentInstance {
     #[napi(constructor)]
     pub fn new() -> Self {
         unreachable!("ComponentDefinition can only be created by using ComponentCompiler.")
+    }
+
+    #[napi]
+    pub fn definition(&self) -> JsComponentDefinition {
+        self.internal.definition().into()
     }
 
     #[napi]

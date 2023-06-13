@@ -14,5 +14,5 @@ pub use component_instance::*;
 mod diagnostic;
 pub use diagnostic::*;
 
-mod value_type;
-pub use value_type::*;
+mod value;
+pub use value::*;

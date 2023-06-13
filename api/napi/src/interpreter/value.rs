@@ -32,3 +32,16 @@ pub struct JsProperty {
     pub name: String,
     pub value_type: JsValueType
 }
+
+// #[napi(js_name = "Value")]
+// pub enum JsValue {
+//     Void,
+//     Number(f64),
+//     String(SharedString),
+//     Bool(bool),
+//     Image(Image),
+//     Model(ModelRc<Value>),
+//     Struct(Struct),
+//     Brush(Brush),
+//     // some variants omitted
+// }
