@@ -1,0 +1,127 @@
+// Copyright © SixtyFPS GmbH <info@slint-ui.com>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
+
+import { Typography, Palette } from "styling.slint";
+import { FocusBorder } from "focus-border.slint";
+import { Paths } from "paths.slint";
+
+export component CheckBox {
+    private property <color> text-color: Palette.foreground-3;
+
+    callback toggled;
+
+    in property <string> text;
+    in-out property <bool> checked;
+    out property <bool> has-focus: i-focus-scope.has-focus;
+    in property<bool> enabled <=> i-touch-area.enabled;
+
+    min-height: max(32px, i-layout.min-height);
+
+    accessible-checkable: true;
+    accessible-role: checkbox;
+
+    i-layout := HorizontalLayout {
+        padding-left: 8px;
+        padding-right: root.text == "" ? 8px : 12px;
+        spacing: 12px;
+
+        i-box := Rectangle {
+            width: 16px;
+            height: self.width;
+            y: (parent.height - self.height) / 2;
+            border-radius: 2px;
+            border-color: Palette.stroke-accessible;
+            border-width: 1px;
+
+            i-path := Path {
+                visible: false;
+                commands: Paths.check-mark;
+                fill: Palette.foreground-inverted;
+                width: 8px;
+                height: 6px;
+
+                animate fill { duration: 200ms; }
+            }
+
+            animate background, border-color { duration: 200ms; }
+        }
+
+        if (root.text != "") : Text {
+            text: root.text;
+            color: root.text-color;
+            font-size: Typography.body-1.font-size;
+            font-weight: Typography.body-1.font-weight;
+            vertical-alignment: center;
+            horizontal-alignment: left;
+        }
+    }
+
+    i-touch-area := TouchArea {
+        clicked => {
+            if (root.enabled) {
+                root.checked = !root.checked;
+                root.toggled();
+            }
+        }
+    }
+
+    i-focus-scope := FocusScope {
+        x: 0;
+        width: 0; // Do not react on clicks
+        enabled <=> root.enabled;
+
+        key-pressed(event) => {
+            if (event.text == " " || event.text == "\n") {
+                i-touch-area.clicked();
+                return accept;
+            }
+            return reject;
+        }
+    }
+
+    // focus border
+    if (root.has-focus) : FocusBorder {
+        border-radius: 4px;
+    }
+
+    states [
+        checked-disabled when root.checked && !root.enabled : {
+            i-box.border-color: Palette.stroke-disabled;
+            root.text-color: Palette.foreground-disabled;
+            i-path.visible: true;
+            i-path.fill: Palette.foreground-disabled;
+        }
+        checked-pressed when root.checked && i-touch-area.pressed : {
+            i-box.background: Palette.combound-brand-background-pressed;
+            i-box.border-width: 0;
+            root.text-color: Palette.foreground-1;
+            i-path.visible: true;
+        }
+        checked-hover when root.checked && i-touch-area.has-hover : {
+            i-box.background: Palette.combound-brand-background-hover;
+            i-box.border-width: 0;
+            root.text-color: Palette.foreground-1;
+            i-path.visible: true;
+        }
+        checked when root.checked && root.enabled : {
+            i-box.background: Palette.combound-brand-background;
+            i-box.border-width: 0;
+            root.text-color: Palette.foreground-1;
+            i-path.visible: true;
+        }
+        disabled when !root.enabled : {
+            root.text-color: Palette.foreground-disabled;
+            i-box.border-color: Palette.stroke-accessible-disabled;
+        }
+        pressed when i-touch-area.pressed : {
+            root.text-color: Palette.foreground-1;
+            i-box.border-color: Palette.stroke-accessible-pressed;
+        }
+        hover when i-touch-area.has-hover : {
+            root.text-color: Palette.foreground-2;
+            i-box.border-color: Palette.stroke-accessible-hover;
+        }
+    ]
+
+    animate text-color { duration: 200ms; }
+}

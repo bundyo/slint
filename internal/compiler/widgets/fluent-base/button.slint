@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
 
 import { Typography, Palette } from "styling.slint";
+import { FocusBorder } from "focus-border.slint";
 
 export component Button {
     callback clicked;
@@ -67,8 +68,8 @@ export component Button {
     }
 
     i-focus-scope := FocusScope {
-        x:0;
-        width: 0px; // Do not react on clicks
+        x: 0;
+        width: 0; // Do not react on clicks
         enabled <=> root.enabled;
 
         key-pressed(event) => {
@@ -81,20 +82,8 @@ export component Button {
     }
 
     // focus border
-    if (root.has-focus) : Rectangle {
-        border-width: 2px;
+    if (root.has-focus) : FocusBorder {
         border-radius: i-background.border-radius;
-        border-color: Palette.stroke-1-focused;
-
-        Rectangle {
-            x: parent.border-radius;
-            y: parent.border-radius;
-            width: parent.width - 2 * parent.border-radius;
-            height: parent.height - 2 * parent.border-radius;
-            border-width: 1px;
-            border-radius: parent.border-width;
-            border-color: Palette.stroke-2-focused;
-        }
     }
 
     states [
