@@ -1,12 +1,9 @@
 // Copyright © SixtyFPS GmbH <info@slint-ui.com>
 // SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
 
-
 #![deny(clippy::all)]
 
-use slint_interpreter::{
-    ComponentCompiler, ComponentDefinition, ComponentHandle, SharedString, Value,
-};
+use slint_interpreter::{ComponentCompiler, ComponentHandle};
 
 mod interpreter;
 pub use interpreter::*;

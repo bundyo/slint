@@ -2,6 +2,36 @@ import test from 'ava'
 
 import { ComponentCompiler, ComponentDefinition, JsComponentInstance } from '../index'
 
+test('get/set include paths', (t) => {
+  let compiler = new ComponentCompiler;
+
+  t.is(compiler.includePaths.length, 0);
+
+  compiler.includePaths = ["path/one/", "path/two/", "path/three/"];
+
+  t.is(compiler.includePaths.length, 3);
+  t.is(compiler.includePaths[0], "path/one/");
+  t.is(compiler.includePaths[1], "path/two/");
+  t.is(compiler.includePaths[2], "path/three/");
+})
+
+test('get/set style', (t) => {
+  let compiler = new ComponentCompiler;
+
+  t.is(compiler.style, null);
+
+  compiler.style = "fluent";
+  t.is(compiler.style, "fluent");
+})
+
+test('get/set build from source', (t) => {
+  let compiler = new ComponentCompiler;
+
+  let definition = compiler.buildFromSource(`export component App {}`, "");
+  t.is(definition?.name, "App");
+})
+
+
 test('get/set string properties', (t) => {
 
   let compiler = new ComponentCompiler;
@@ -108,7 +138,7 @@ test('set struct properties', (t) => {
     in-out property <Player> player: {
       name: "Florian",
       age: 20,
-    }; 
+    };
   }
   `, "");
   let instance = definition?.create()!;
