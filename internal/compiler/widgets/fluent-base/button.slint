@@ -26,9 +26,13 @@ export component Button {
 
     i-background := Rectangle {
         border-radius: 4px;
-        border-width: root.primary ? 0 : 1px;
-        background: root.primary ? Palette.brand-background : Palette.background-1;
-        border-color: Palette.stroke-1;
+        background: root.primary ? Palette.accent-default : Palette.control-default;
+
+        i-border := Rectangle {
+            border-radius: parent.border-radius;
+            border-width: 1px;
+            border-color: root.primary ? Palette.accent-control-border : Palette.control-border;
+        }
 
         i-layout := HorizontalLayout {
             padding-left: 12px;
@@ -45,7 +49,7 @@ export component Button {
             }
 
             i-text := Text {
-                color: root.primary ? Palette.foreground-on-brand : Palette.foreground-1;
+                color: root.primary || root.checked ? Palette.text-on-accent-primary : Palette.text-primary;
                 font-size: Typography.body-1.font-size;
                 font-weight: Typography.body-1.font-weight;
                 horizontal-alignment: center;
@@ -82,27 +86,28 @@ export component Button {
     }
 
     // focus border
-    if (root.has-focus) : FocusBorder {
+    if (root.has-focus && root.enabled) : FocusBorder {
         border-radius: i-background.border-radius;
     }
 
     states [
         disabled when !root.enabled : {
-            i-background.background: Palette.background-disabled;
-            i-background.border-color: Palette.stroke-disabled;
-            i-text.color: Palette.foreground-disabled;
-        }
-        checked when root.checked : {
-            i-background.background: root.primary ? Palette.brand-background-selected : Palette.background-1-selected;
-            i-background.border-color: Palette.stroke-1-selected;
+            i-background.background: root.primary || root.checked ? Palette.accent-disabled : Palette.control-disabled;
+            i-border.border-color: root.primary || root.checked ? transparent : Palette.control-stroke;
+            i-text.color: root.primary || root.checked ? Palette.text-on-accent-disabled : Palette.text-disabled;
         }
         pressed when root.pressed : {
-            i-background.background: root.primary ? Palette.brand-background-pressed : Palette.background-1-pressed;
-            i-background.border-color: Palette.stroke-1-pressed;
+            i-background.background: root.primary || root.checked ? Palette.accent-tertiary : Palette.control-tertiary;
+            i-border.border-color: Palette.control-stroke;
+            i-text.color: root.primary || root.checked ? Palette.text-on-accent-secondary : Palette.text-secondary;
         }
         hover when i-touch-area.has-hover : {
-            i-background.background: root.primary ? Palette.brand-background-hover : Palette.background-1-hover;
-            i-background.border-color: Palette.stroke-1-hover;
+            i-background.background: root.primary || root.checked ? Palette.accent-secondary : Palette.control-secondary;
+        }
+        checked when root.checked : {
+            i-background.background: Palette.accent-default;
+            i-border.border-color: Palette.accent-control-border;
+            i-text.color: Palette.text-on-accent-primary;
         }
     ]
 }

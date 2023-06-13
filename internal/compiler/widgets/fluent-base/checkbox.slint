@@ -5,7 +5,7 @@ import { Typography, Palette, Paths } from "styling.slint";
 import { FocusBorder } from "components.slint";
 
 export component CheckBox {
-    private property <color> text-color: Palette.foreground-3;
+    private property <color> text-color: Palette.text-secondary;
 
     callback toggled;
 
@@ -24,20 +24,25 @@ export component CheckBox {
         padding-right: root.text == "" ? 8px : 12px;
         spacing: 12px;
 
-        i-box := Rectangle {
-            width: 16px;
+        i-background := Rectangle {
+            width: 18px;
             height: self.width;
             y: (parent.height - self.height) / 2;
+            background: Palette.control-alt-secondary;
             border-radius: 2px;
-            border-color: Palette.stroke-accessible;
-            border-width: 1px;
 
-            i-path := Path {
-                visible: false;
+            i-border := Rectangle {
+                border-color: Palette.control-strong-stroke;
+                border-width: root.checked ? 0 : 1px;
+                border-radius: parent.border-radius;
+            }
+
+            i-icon := Path {
+                visible: root.checked;
                 commands: Paths.check-mark;
-                fill: Palette.foreground-inverted;
-                width: 8px;
-                height: 6px;
+                fill: Palette.text-on-accent-primary;
+                width: 12px;
+                height: 12px;
 
                 animate fill { duration: 200ms; }
             }
@@ -79,46 +84,27 @@ export component CheckBox {
     }
 
     // focus border
-    if (root.has-focus) : FocusBorder {
+    if (root.has-focus && root.enabled) : FocusBorder {
         border-radius: 4px;
     }
 
     states [
-        checked-disabled when root.checked && !root.enabled : {
-            i-box.border-color: Palette.stroke-disabled;
-            root.text-color: Palette.foreground-disabled;
-            i-path.visible: true;
-            i-path.fill: Palette.foreground-disabled;
-        }
-        checked-pressed when root.checked && i-touch-area.pressed : {
-            i-box.background: Palette.combound-brand-background-pressed;
-            i-box.border-width: 0;
-            root.text-color: Palette.foreground-1;
-            i-path.visible: true;
-        }
-        checked-hover when root.checked && i-touch-area.has-hover : {
-            i-box.background: Palette.combound-brand-background-hover;
-            i-box.border-width: 0;
-            root.text-color: Palette.foreground-1;
-            i-path.visible: true;
-        }
-        checked when root.checked && root.enabled : {
-            i-box.background: Palette.combound-brand-background;
-            i-box.border-width: 0;
-            root.text-color: Palette.foreground-1;
-            i-path.visible: true;
-        }
         disabled when !root.enabled : {
-            root.text-color: Palette.foreground-disabled;
-            i-box.border-color: Palette.stroke-accessible-disabled;
+            i-border.border-color: Palette.control-strong-stroke-disabled;
+            i-background.background: root.checked ? Palette.accent-disabled : Palette.control-alt-disabled;
+            i-icon.fill: Palette.text-on-accent-disabled;
+            root.text-color: Palette.text-disabled;
         }
         pressed when i-touch-area.pressed : {
-            root.text-color: Palette.foreground-1;
-            i-box.border-color: Palette.stroke-accessible-pressed;
+            i-border.border-color: Palette.control-strong-stroke-disabled;
+            i-background.background: root.checked ? Palette.accent-tertiary : Palette.control-alt-quartiary;
+            i-icon.fill: Palette.text-on-accent-secondary;
         }
         hover when i-touch-area.has-hover : {
-            root.text-color: Palette.foreground-2;
-            i-box.border-color: Palette.stroke-accessible-hover;
+            i-background.background: root.checked ?  Palette.accent-secondary : Palette.control-alt-tertiary;
+        }
+        checked when root.checked && root.enabled : {
+            i-background.background: Palette.accent-default;
         }
     ]
 

@@ -22,44 +22,41 @@ export global Typography {
 export global Palette {
     in-out property<bool> dark-color-scheme: ColorSchemeSelector.dark-color-scheme;
 
-    out property <brush> brand-background: dark-color-scheme ? #115EA3 : #0F6CBD;
-    out property <brush> brand-background-hover: dark-color-scheme ? #0F6CBD : #115EA3;
-    out property <brush> brand-background-pressed: dark-color-scheme ? #0C3B5E : #0C3B5E;
-    out property <brush> brand-background-selected: dark-color-scheme ? #0F548C : #0F548C;
-    out property <brush> combound-brand-background: dark-color-scheme ? #479EF5 : #0F6CBD;
-    out property <brush> combound-brand-background-hover: dark-color-scheme ? #62ABF5 : #115EA3;
-    out property <brush> combound-brand-background-pressed: dark-color-scheme ? #2886DE : #115EA3;
-    out property <brush> combound-brand-storke-1: dark-color-scheme ? #479EF5 : #0F6CBD;
-    out property <brush> background-1: dark-color-scheme ? #292929 : #FFFFFF;
-    out property <brush> background-1-hover: dark-color-scheme ? #3D3D3D : #F5F5F5;
-    out property <brush> background-1-pressed: dark-color-scheme ? #1F1F1F : #E0E0E0;
-    out property <brush> background-1-selected: dark-color-scheme ? #383838 : #EBEBEB;
-    out property <brush> background-disabled: dark-color-scheme ? #141414 : #F0F0F0;
-    out property <brush> foreground-1: dark-color-scheme ? #FFFFFF : #242424;
-    out property <brush> foreground-on-brand: #FFFFFF;
-    out property <brush> foreground-1-hover: dark-color-scheme ? #FFFFFF : #242424;
-    out property <brush> foreground-1-pressed: dark-color-scheme ? #FFFFFF : #242424;
-    out property <brush> foreground-1-selected: dark-color-scheme ? #FFFFFF : #242424;
-    out property <brush> foreground-2: dark-color-scheme ? #D6D6D6 : #424242;
-    out property <brush> foreground-2-hover: dark-color-scheme ? #FFFFFF : #242424;
-    out property <brush> foreground-2-pressed: dark-color-scheme ? #FFFFFF : #242424;
-    out property <brush> foreground-3: dark-color-scheme ? #ADADAD : #616161;
-    out property <brush> foreground-inverted: dark-color-scheme ? #242424 : #FFFFFF;
-    out property <brush> foreground-inverted-hover: dark-color-scheme ? #242424 : #FFFFFF;
-    out property <brush> foreground-inverted-pressed: dark-color-scheme ? #242424 : #FFFFFF;
-    out property <brush> foreground-disabled: dark-color-scheme ? #5C5C5C : #BDBDBD;
-    out property <brush> stroke-1: dark-color-scheme ? #666666 : #D1D1D1;
-    out property <brush> stroke-1-hover: dark-color-scheme ? #757575 : #C7C7C7;
-    out property <brush> stroke-1-pressed: dark-color-scheme ? #6B6B6B : #B3B3B3;
-    out property <brush> stroke-1-selected: dark-color-scheme ? #707070 : #BDBDBD;
-    out property <brush> stroke-disabled: dark-color-scheme ? #424242 : #E0E0E0;
-    out property <brush> stroke-1-focused: dark-color-scheme ? #FFFFFF : #000000;
-    out property <brush> stroke-2-focused: dark-color-scheme ? #000000 : #FFFFFF;
-    out property <brush> stroke-accessible: dark-color-scheme ? #ADADAD : #616161;
-    out property <brush> stroke-accessible-hover: dark-color-scheme ? #BDBDBD : #575757;
-    out property <brush> stroke-accessible-pressed: dark-color-scheme ? #B3B3B3 : #4D4D4D;
-    out property <brush> stroke-accessible-disabled: dark-color-scheme ? #424242 : #E0E0E0;
-    out property <brush> shadow: dark-color-scheme ? #00000074 : #00000024;
+    out property <brush> accent-default: dark-color-scheme ? #60CDFF : #005FB8;
+    out property <brush> accent-secondary: dark-color-scheme ? #60CDFFE6 : #005FB8E6;
+    out property <brush> accent-tertiary: dark-color-scheme ? #60CDFFCC : #005FB8CC;
+    out property <brush> accent-disabled: dark-color-scheme ? #FFFFFF29 : #00000038;
+    out property <brush> accent-control-border: dark-color-scheme ? @linear-gradient(180deg, #FFFFFF14 0%, #00000024 100%)
+        : @linear-gradient(180deg, #FFFFFF14 0%, #00000066 100%);
+    out property <brush> control-default: dark-color-scheme ? #FFFFFF0F : #FFFFFFB3;
+    out property <brush> control-border: dark-color-scheme ? @linear-gradient(180deg, #FFFFFF17 0%, #00000012 100%)
+        : @linear-gradient(180deg, #0000000F 0%, #00000029 100%);
+    out property <brush> text-on-accent-primary: dark-color-scheme ? #000000 : #FFFFFF;
+    out property <brush> text-on-accent-secondary: dark-color-scheme ? #00000080 : #FFFFFFB3;
+    out property <brush> text-on-accent-disabled: dark-color-scheme ? #FFFFFF87 : #FFFFFF;
+    out property <brush> text-primary: dark-color-scheme ? #FFFFFF : #000000E6;
+    out property <brush> text-secondary: dark-color-scheme ? #FFFFFFC9 : #00000099;
+    out property <brush> text-tertiary: dark-color-scheme ? #FFFFFF8A : #00000073;
+    out property <brush> text-disabled: dark-color-scheme ? #FFFFFF5E : #0000005E;
+    out property <brush> control-stroke: dark-color-scheme ? #FFFFFF14 : #0000000F;
+    out property <brush> control-secondary: dark-color-scheme ? #FFFFFF14 : #F9F9F980;
+    out property <brush> control-tertiary: dark-color-scheme ? #FFFFFF08 : #F9F9F94D;
+    out property <brush> control-disabled: dark-color-scheme ? #FFFFFF0A : #F9F9F94D;
+    out property <brush> control-alt-secondary: dark-color-scheme ? #0000001A : #00000005;
+    out property <brush> control-alt-tertiary: dark-color-scheme ? #FFFFFF0A : #0000000F;
+    out property <brush> control-alt-quartiary: dark-color-scheme ? #FFFFFF12 : #00000017;
+    out property <brush> control-alt-disabled: transparent;
+    out property <brush> control-strong-stroke: dark-color-scheme ? #FFFFFF99 : #00000099;
+    out property <brush> control-strong-stroke-disabled: dark-color-scheme ? #FFFFFF29 : #00000038;
+    out property <brush> focus-stroke-inner: dark-color-scheme ? #000000B3 : #FFFFFF;
+    out property <brush> focus-stroke-outer: dark-color-scheme ? #FFFFFF : #000000E6;
+    out property <brush> surface-stroke-flyout: dark-color-scheme ? #00000033 : #0000000F;
+    out property <brush> sub-title-secondary: dark-color-scheme ? #FFFFFF0F : #0000000A;
+    out property <brush> sub-title-tertiary: dark-color-scheme ? #FFFFFF0A : #00000005;
+    out property <brush> shadow: dark-color-scheme ? #00000042 : #00000024;
+
+    // fallback values for the acrylic brushes
+    out property <brush> acrylic-background: dark-color-scheme ? #2C2C2C : #F9F9F9;
 }
 
 export global Paths {
