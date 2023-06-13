@@ -1,0 +1,18 @@
+// Copyright © SixtyFPS GmbH <info@slint-ui.com>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
+
+export struct TextStyle {
+    font-size: length,
+    font-weight: int,
+}
+
+export global Typography {
+    out property <int> light-font-weight: 300;
+    out property <int> regular-font-weight: 400;
+    out property <int> semibold-font-weight: 600;
+
+    out property <TextStyle> body-1: {
+        font-size: 14px,
+        font-weight: regular-font-weight
+    };
+}
