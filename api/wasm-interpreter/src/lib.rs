@@ -195,13 +195,12 @@ impl WrappedCompiledComp {
         instance: WrappedInstance,
     ) -> Result<InstancePromise, JsValue> {
         Ok(JsValue::from(js_sys::Promise::new(&mut |resolve, reject| {
-            let comp = send_wrapper::SendWrapper::new(self.0.clone());
-            let instance = send_wrapper::SendWrapper::new(instance.0.clone_strong());
-            let resolve = send_wrapper::SendWrapper::new(resolve);
+            let params = send_wrapper::SendWrapper::new((self.0.clone(), instance.0.clone_strong(), resolve));
             if let Err(e) = slint_interpreter::invoke_from_event_loop(move || {
+                let (comp, instance, resolve) = params.take();    
                 let instance =
-                    WrappedInstance(comp.take().create_with_existing_window(instance.take().window()).unwrap());
-                resolve.take().call1(&JsValue::UNDEFINED, &JsValue::from(instance)).unwrap_throw();
+                    WrappedInstance(comp.create_with_existing_window(instance.window()).unwrap());
+                resolve.call1(&JsValue::UNDEFINED, &JsValue::from(instance)).unwrap_throw();
             }) {
                 reject
                     .call1(
@@ -250,13 +249,13 @@ impl WrappedInstance {
             let inst_weak = self.0.as_weak();
 
             if let Err(e) = slint_interpreter::invoke_from_event_loop({
-                let resolve = send_wrapper::SendWrapper::new(resolve);
-                let reject = send_wrapper::SendWrapper::new(reject.clone());
-                let callback = send_wrapper::SendWrapper::new(callback.take().unwrap());
+                let params = send_wrapper::SendWrapper::new((
+                    resolve,
+                    reject.clone(),
+                    callback.take().unwrap(),
+                ));
                 move || {
-                    let resolve = resolve.take();
-                    let reject = reject.take();
-                    let callback = callback.take();
+                    let (resolve, reject, callback) = params.take();
                     match inst_weak.upgrade() {
                         Some(instance) => match callback(&instance) {
                             Ok(()) => {
