@@ -197,7 +197,7 @@ impl WrappedCompiledComp {
         Ok(JsValue::from(js_sys::Promise::new(&mut |resolve, reject| {
             let params = send_wrapper::SendWrapper::new((self.0.clone(), instance.0.clone_strong(), resolve));
             if let Err(e) = slint_interpreter::invoke_from_event_loop(move || {
-                let (comp, instance, resolve) = params.take();    
+                let (comp, instance, resolve) = params.take();
                 let instance =
                     WrappedInstance(comp.create_with_existing_window(instance.window()).unwrap());
                 resolve.call1(&JsValue::UNDEFINED, &JsValue::from(instance)).unwrap_throw();
