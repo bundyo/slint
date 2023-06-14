@@ -217,7 +217,7 @@ class PreviewerBackend {
         })
     }
 
-    private async with_instance<R>(callback: (instance: slint_preview.WrappedInstance) => R): Promise<R | null> {
+    private async with_instance<R>(callback: (_instance: slint_preview.WrappedInstance) => R): Promise<R | null> {
         if (this.#instance == null) {
             return null;
         }
