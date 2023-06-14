@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { ComponentCompiler, ComponentDefinition, JsComponentInstance } from '../index'
+import { ComponentCompiler, ComponentDefinition, ImageData } from '../index'
 
 test('get/set include paths', (t) => {
   let compiler = new ComponentCompiler;
@@ -9,10 +9,7 @@ test('get/set include paths', (t) => {
 
   compiler.includePaths = ["path/one/", "path/two/", "path/three/"];
 
-  t.is(compiler.includePaths.length, 3);
-  t.is(compiler.includePaths[0], "path/one/");
-  t.is(compiler.includePaths[1], "path/two/");
-  t.is(compiler.includePaths[2], "path/three/");
+  t.deepEqual(compiler.includePaths, ["path/one/", "path/two/", "path/three/"]);
 })
 
 test('get/set style', (t) => {
@@ -139,6 +136,7 @@ test('set struct properties', (t) => {
       name: "Florian",
       age: 20,
     };
+    in-out property <image> image;
   }
   `, "");
   let instance = definition?.create()!;
@@ -147,4 +145,6 @@ test('set struct properties', (t) => {
     "name": "Florian",
     "age": 20,
   });
+
+  t.deepEqual(instance.getProperty("image"), new ImageData(0, 0));
 })
