@@ -13,6 +13,9 @@ export { CheckBox }
 import { ComboBox } from "combobox.slint";
 export { ComboBox }
 
+import { GroupBox } from "groupbox.slint";
+export { GroupBox }
+
 export { StyleMetrics, ScrollView, Button, StandardButton, TextEdit, AboutSlint, Switch }
 export * from "widget-table-view.slint";
 
@@ -258,28 +261,6 @@ export component Slider {
 
 
 
-export component GroupBox {
-    in property <string> title <=> label.text;
-    in property<bool> enabled: true;
-
-    VerticalLayout {
-        spacing: 8px;
-        padding-top: 16px;
-        padding-bottom: 8px;
-
-        label := Text {
-            vertical-stretch: 0;
-            color: !root.enabled ? Palette.neutralTertiary : Palette.neutralDark;
-            font-weight: 600;
-        }
-        Rectangle {
-            vertical-stretch: 1;
-            GridLayout {
-                @children
-            }
-        }
-    }
-}
 
 export component TabWidgetImpl inherits Rectangle {
     out property <length> content-x: 0;

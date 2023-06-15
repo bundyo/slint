@@ -13,9 +13,14 @@ export global Typography {
     out property <int> regular-font-weight: 400;
     out property <int> semibold-font-weight: 600;
 
-    out property <TextStyle> body-1: {
+    out property <TextStyle> body: {
         font-size: 14px,
         font-weight: regular-font-weight
+    };
+
+    out property <TextStyle> body-strong: {
+        font-size: 14px,
+        font-weight: semibold-font-weight
     };
 }
 
