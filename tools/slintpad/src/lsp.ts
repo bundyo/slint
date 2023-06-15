@@ -113,6 +113,7 @@ type BackendChatter =
       };
 
 type HighlightInfo = { file: string; offset: number };
+type InstanceCallback<R> = (instance: slint_preview.WrappedInstance) => R;
 
 class PreviewerBackend {
     #client_port: MessagePort;
@@ -217,7 +218,7 @@ class PreviewerBackend {
         })
     }
 
-    private async with_instance<R>(callback: (_instance: slint_preview.WrappedInstance) => R): Promise<R | null> {
+    private async with_instance<R>(callback: InstanceCallback<R>): Promise<R | null> {
         if (this.#instance == null) {
             return null;
         }
