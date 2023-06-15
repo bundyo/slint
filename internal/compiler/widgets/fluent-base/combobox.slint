@@ -8,7 +8,7 @@ export component ComboBox {
     callback selected(string /* current-value */);
 
     in property <[string]> model;
-    in property <bool> enabled <=> i-touch-area.enabled;
+    in property <bool> enabled <=> i-focus-scope.enabled;
     out property <bool> has-focus <=> i-focus-scope.has-focus;
     in-out property <int> current-index: 0;
     in-out property <string> current-value: root.model[root.current-index];
@@ -19,15 +19,34 @@ export component ComboBox {
     vertical-stretch: 0;
     forward-focus: i-focus-scope;
 
+    i-focus-scope := FocusScope {
+        key-pressed(event) => {
+            if (event.text == Key.UpArrow) {
+                root.move-selection-up();
+                return accept;
+            } else if (event.text == Key.DownArrow) {
+
+                root.move-selection-down();
+                return accept;
+            } else if (event.text == Key.Return) {
+                i-popup.show();
+            }
+            return reject;
+        }
+
+        i-touch-area := TouchArea {
+            clicked => {
+                root.focus();
+                i-popup.show();
+            }
+        }
+    }
+
     i-background := Rectangle {
         border-radius: 3px;
         background: Palette.control-default;
-
-        i-border := Rectangle {
-            border-radius: parent.border-radius;
-            border-width: 1px;
-            border-color: Palette.control-border;
-        }
+        border-width: 1px;
+        border-color: Palette.control-border;
 
         i-layout := HorizontalLayout {
             padding-left: 11px;
@@ -53,32 +72,6 @@ export component ComboBox {
         }
 
         animate border-color { duration: 200ms; }
-    }
-
-    i-touch-area := TouchArea {
-        clicked => {
-            root.focus();
-            i-popup.show();
-        }
-    }
-
-    i-focus-scope := FocusScope {
-        x: 0;
-        width: 0; // Do not react on clicks
-        enabled <=> root.enabled;
-
-        key-pressed(event) => {
-            if (event.text == Key.UpArrow) {
-                root.move-selection-up();
-                return accept;
-            } else if (event.text == Key.DownArrow) {
-                root.move-selection-down();
-                return accept;
-            } else if (event.text == Key.Return) {
-                i-popup.show();
-            }
-            return reject;
-        }
     }
 
     // focus border
@@ -124,13 +117,13 @@ export component ComboBox {
     states [
         disabled when !root.enabled : {
             i-background.background: Palette.control-disabled;
-            i-border.border-color: Palette.control-stroke;
+            i-background.border-color: Palette.control-stroke;
             i-text.color: Palette.text-disabled;
             i-icon.fill: Palette.text-disabled;
         }
         pressed when i-touch-area.pressed : {
             i-background.background: Palette.control-alt-tertiary;
-            i-border.border-color: Palette.control-stroke;
+            i-background.border-color: Palette.control-stroke;
             i-text.color: Palette.text-secondary;
             i-icon.fill: Palette.text-tertiary;
         }

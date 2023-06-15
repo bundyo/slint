@@ -16,6 +16,9 @@ export { ComboBox }
 import { GroupBox } from "groupbox.slint";
 export { GroupBox }
 
+import { LineEdit } from "lineedit.slint";
+export { LineEdit }
+
 export { StyleMetrics, ScrollView, Button, StandardButton, TextEdit, AboutSlint, Switch }
 export * from "widget-table-view.slint";
 
@@ -384,57 +387,6 @@ export component TabBarImpl {
 }
 
 export component TabWidget inherits TabWidget {}
-
-export component LineEdit {
-    in property <length> font-size <=> inner.font-size;
-    in-out property <string> text <=> inner.text;
-    in property <string> placeholder-text <=> inner.placeholder-text;
-    out property <bool> has-focus: inner.has-focus;
-    in property <bool> enabled <=> inner.enabled;
-    in property input-type <=> inner.input-type;
-    in property horizontal-alignment <=> inner.horizontal-alignment;
-    in property read-only <=> inner.read-only;
-    callback accepted <=> inner.accepted;
-    callback edited <=> inner.edited;
-    forward-focus: inner;
-  //  border-color: root.has-focus ? Palette.highlight-background : #ffffff;
-
-    public function select-all() {
-        inner.select-all();
-    }
-    public function cut() {
-        inner.cut();
-    }
-    public function copy() {
-        inner.copy();
-    }
-    public function paste() {
-        inner.paste();
-    }
-
-    horizontal-stretch: 1;
-    vertical-stretch: 0;
-    min-height: max(32px, l.min-height);
-
-    Rectangle {
-        background: !root.enabled ? Palette.neutralLighter : Palette.white;
-        border-radius: 2px;
-        border-width: !root.enabled ? 0px : root.has-focus ? 2px : 1px;
-        border-color: !root.enabled ? Palette.neutralLighter
-            : root.has-focus ? Palette.themeSecondary
-            : Palette.neutralPrimary;
-    }
-
-    l := HorizontalLayout {
-        padding-left: 8px;
-        padding-right: 8px;
-        padding-top: 3px;
-        padding-bottom: 3px;
-        inner := LineEditInner {
-            placeholder-color: !self.enabled ? Palette.neutralTertiary : Palette.neutralSecondary;
-        }
-    }
-}
 
 export component ListView inherits ScrollView {
     @children

@@ -75,7 +75,7 @@ export component ListItem {
             animate height { duration: 150ms; easing: ease-out; }
         }
 
-        animate background { duration: 200ms; }
+        animate background { duration: 150ms; }
     }
 
     i-touch-area := TouchArea {}
@@ -83,7 +83,6 @@ export component ListItem {
     states [
         pressed when i-touch-area.pressed : {
             i-background.background: Palette.sub-title-secondary;
-            i-selector.height: 10px;
         }
         hover when i-touch-area.has-hover : {
             i-text.color: Palette.text-secondary;
