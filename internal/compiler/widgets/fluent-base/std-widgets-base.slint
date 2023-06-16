@@ -19,6 +19,9 @@ export { GroupBox }
 import { LineEdit } from "lineedit.slint";
 export { LineEdit }
 
+import { ListView, StandardListView } from "listview.slint";
+export { ListView, StandardListView }
+
 export { StyleMetrics, ScrollView, Button, StandardButton, TextEdit, AboutSlint, Switch }
 export * from "widget-table-view.slint";
 
@@ -387,70 +390,6 @@ export component TabBarImpl {
 }
 
 export component TabWidget inherits TabWidget {}
-
-export component ListView inherits ScrollView {
-    @children
-}
-
-component StandardListViewBase inherits ListView {
-    private property <length> item-height: self.viewport-height / self.model.length;
-    private property <length> current-item-y: self.viewport-y + current-item * item-height;
-
-    in property<[StandardListViewItem]> model;
-    in-out property<int> current-item: -1;
-
-    for item[idx] in root.model : Rectangle {
-        l := HorizontalLayout {
-            padding: 8px;
-            spacing: 0px;
-            t := Text {
-                text: item.text;
-                color: Palette.neutralPrimary;
-            }
-        }
-        background: idx == root.current-item ? Palette.neutralLighter
-                    : touch.has-hover ? Palette.neutralLighterAlt : transparent;
-        touch := TouchArea {
-            width: parent.width;
-            height: parent.height;
-
-            clicked => {
-                set-current-item(idx);
-            }
-        }
-    }
-
-    public function set-current-item(index: int) {
-        if(index < 0 || index >= model.length) {
-            return;
-        }
-
-        current-item = index;
-
-        if(current-item-y < 0) {
-            self.viewport-y += 0 - current-item-y;
-        }
-
-        if(current-item-y + item-height > self.visible-height) {
-            self.viewport-y -= current-item-y + item-height - self.visible-height;
-        }
-    }
-}
-
-export component StandardListView inherits StandardListViewBase {
-    FocusScope {
-        key-pressed(event) => {
-            if (event.text == Key.UpArrow) {
-                root.set-current-item(root.current-item - 1);
-                return accept;
-            } else if (event.text == Key.DownArrow) {
-                root.set-current-item(root.current-item + 1);
-                return accept;
-            }
-            reject
-        }
-    }
-}
 
 export component VerticalBox inherits VerticalLayout {
     spacing: StyleMetrics.layout-spacing;
